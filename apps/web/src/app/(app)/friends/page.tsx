@@ -8,6 +8,7 @@ import { getApi } from '@/lib/api';
 import { useAsync, useDebounced } from '@/lib/useAsync';
 import { useSession } from '@/components/SessionProvider';
 import { Avatar, Button, EmptyState, ErrorState, Input, ListSkeleton, PageHeader, Tabs, useToast } from '@/components/ui';
+import { GuestGate } from '@/components/Guest';
 
 type Tab = 'friends' | 'received' | 'sent' | 'find';
 
@@ -25,6 +26,12 @@ function Row({ p, children, online }: { p: ProfileLite & { bio?: string | null }
 }
 
 export default function FriendsPage() {
+  const { profile } = useSession();
+  if (profile?.is_guest) return <><PageHeader title="Friends" /><GuestGate feature="Friends" /></>;
+  return <Friends />;
+}
+
+function Friends() {
   const api = getApi();
   const router = useRouter();
   const toast = useToast();

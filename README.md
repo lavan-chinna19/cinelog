@@ -93,6 +93,15 @@ All primary keys are UUIDs, with foreign keys throughout. Key constraints:
 
 ---
 
+## Guest / trial mode
+
+Beginners can tap **"Try it without an account"** on the landing, log-in or sign-up screen (web and mobile). This uses Supabase **anonymous sign-ins** (Auth → Providers → *Allow anonymous sign-ins* must be ON; the default rate limit is 30 guests per hour per IP).
+
+- Guests can search TMDB, use their own watchlist, diary and stats.
+- Guests are hidden from everyone else and cannot add friends, chat or recommend. This is enforced in the database (`supabase/migrations/20261103010000_guest_mode.sql`), not just the UI.
+- **Create free account** (`/claim`, or the mobile `claim` screen) adds an email, password and username to the *same* user, so everything logged as a guest is kept.
+- Logging out as a guest discards that guest's data, and the app warns first.
+
 ## 2 · TMDB setup
 
 1. Create an account at [themoviedb.org](https://www.themoviedb.org/), then go to Settings → API and copy the **API Read Access Token** (v4). A v3 API key also works.

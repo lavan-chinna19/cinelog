@@ -13,6 +13,8 @@ export interface Profile {
   show_diary: boolean;
   last_seen_at: string | null;
   created_at: string;
+  /** Trial user who hasn't created an account yet (Supabase anonymous sign-in). */
+  is_guest?: boolean;
 }
 
 export type ProfileLite = Pick<Profile, 'id' | 'username' | 'avatar_url'>;

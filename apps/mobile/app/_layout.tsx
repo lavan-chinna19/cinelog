@@ -60,6 +60,7 @@ function Gate() {
       <Stack.Screen name="profile" options={{ title: 'My Profile' }} />
       <Stack.Screen name="settings" options={{ title: 'Settings' }} />
       <Stack.Screen name="notifications" options={{ title: 'Notifications' }} />
+      <Stack.Screen name="claim" options={{ title: 'Create account' }} />
     </Stack>
   );
 }

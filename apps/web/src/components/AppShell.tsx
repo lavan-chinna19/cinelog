@@ -8,6 +8,7 @@ import { getApi } from '@/lib/api';
 import { useSession } from './SessionProvider';
 import { Avatar } from './ui';
 import { QuickAddModal } from './movies/QuickAddModal';
+import { GuestBanner } from './Guest';
 
 const NAV = [
   { href: '/home', label: 'Home', icon: Home },
@@ -60,8 +61,10 @@ export function AppShell({ children }: { children: ReactNode }) {
         {profile && (
           <div className="flex items-center gap-3 rounded-xl border border-line bg-surface/60 p-2.5">
             <Avatar url={profile.avatar_url} name={profile.username} size={36} />
-            <div className="min-w-0 flex-1"><p className="truncate text-sm font-medium">@{profile.username}</p></div>
-            <button onClick={() => getApi().auth.signOut()} className="rounded-lg p-1.5 text-ink-muted hover:bg-surface-raised hover:text-notify" aria-label="Log out"><LogOut className="h-4 w-4" /></button>
+            <div className="min-w-0 flex-1">{profile.is_guest
+              ? <><p className="truncate text-sm font-medium">Guest</p><Link href="/claim" className="text-xs text-amber hover:underline">Create account</Link></>
+              : <p className="truncate text-sm font-medium">@{profile.username}</p>}</div>
+            <button onClick={() => { if (!profile.is_guest || confirm('Leave guest mode? Movies you logged as a guest will be lost unless you create an account first.')) getApi().auth.signOut(); }} className="rounded-lg p-1.5 text-ink-muted hover:bg-surface-raised hover:text-notify" aria-label="Log out"><LogOut className="h-4 w-4" /></button>
           </div>
         )}
       </aside>
@@ -85,7 +88,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       </header>
 
       <main className="px-4 pb-28 pt-6 md:ml-64 md:px-8 md:pb-12">
-        <div className="mx-auto max-w-6xl">{children}</div>
+        <div className="mx-auto max-w-6xl">{profile?.is_guest && path !== '/claim' && <GuestBanner />}{children}</div>
       </main>
 
       {/* Mobile bottom nav */}

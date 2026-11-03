@@ -1,6 +1,6 @@
 import * as ImagePicker from 'expo-image-picker';
 import { useEffect, useState } from 'react';
-import { Pressable, Switch, View } from 'react-native';
+import { Alert, Pressable, Switch, View } from 'react-native';
 import { colors, validateBio, validateUsername, type Privacy } from '@cinelog/shared';
 import { api } from '@/lib/supabase';
 import { useSession } from '@/lib/session';
@@ -75,7 +75,9 @@ export default function Settings() {
         <Field label="Confirm" value={pw.b} onChangeText={(s) => setPw({ ...pw, b: s })} secureTextEntry />
         <Button variant="secondary" title="Update password" onPress={changePw} loading={pwBusy} disabled={!pw.a} />
       </Card>
-      <Button variant="danger" icon="log-out-outline" title="Log out" onPress={() => api.auth.signOut()} />
+      <Button variant="danger" icon="log-out-outline" title="Log out" onPress={() => profile?.is_guest
+        ? Alert.alert('Leave guest mode?', 'Movies you logged as a guest will be lost unless you create an account first.', [{ text: 'Cancel', style: 'cancel' }, { text: 'Leave', style: 'destructive', onPress: () => api.auth.signOut() }])
+        : api.auth.signOut()} />
     </Screen>
   );
 }

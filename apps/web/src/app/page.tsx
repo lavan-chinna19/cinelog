@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { BookOpen, Clapperboard, MessageCircle, Sparkles } from 'lucide-react';
+import { GuestButton } from '@/components/Guest';
 
 export default function Landing() {
   const features = [
@@ -30,6 +31,8 @@ export default function Landing() {
           <Link href="/signup" className="rounded-xl bg-amber px-6 py-3 font-semibold text-bg shadow-[0_12px_40px_-12px_rgba(240,163,94,.8)] hover:brightness-110">Start your diary</Link>
           <Link href="/login" className="rounded-xl border border-line bg-surface px-6 py-3 font-medium hover:border-ink-muted/60">I have an account</Link>
         </div>
+        <div className="mx-auto mt-4 max-w-xs"><GuestButton variant="ghost" label="Just looking? Try it as a guest" /></div>
+        <p className="mt-2 text-xs text-ink-muted">No sign-up needed. Create an account anytime to keep your movies.</p>
         <div className="mx-auto mt-20 grid max-w-4xl gap-4 text-left sm:grid-cols-3">
           {features.map(({ icon: Icon, title, body }) => (
             <div key={title} className="rounded-3xl border border-line bg-surface/60 p-6 backdrop-blur">

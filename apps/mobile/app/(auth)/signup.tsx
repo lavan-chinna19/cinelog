@@ -7,6 +7,7 @@ import { api } from '@/lib/supabase';
 import { useDebounced } from '@/lib/hooks';
 import { Button, Field, T } from '@/components/ui';
 import { AuthFrame } from '@/components/AuthFrame';
+import { GuestButton } from '@/components/guest';
 
 export default function Signup() {
   const [f, setF] = useState({ username: '', email: '', password: '' });
@@ -39,6 +40,7 @@ export default function Signup() {
       {err && <T style={{ color: colors.notify }}>{err}</T>}
       <Button title="Sign up" onPress={submit} loading={busy} />
       <Link href="/(auth)/login" style={{ alignSelf: 'center' }}><T v="muted">Already have an account? <T v="muted" style={{ color: colors.amber }}>Log in</T></T></Link>
+      <GuestButton variant="ghost" title="Not sure yet? Try it as a guest" />
     </AuthFrame>
   );
 }

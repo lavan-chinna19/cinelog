@@ -9,8 +9,15 @@ import { getApi } from '@/lib/api';
 import { useAsync } from '@/lib/useAsync';
 import { useSession } from '@/components/SessionProvider';
 import { Avatar, Button, EmptyState, ListSkeleton } from '@/components/ui';
+import { GuestGate } from '@/components/Guest';
 
 export default function MessagesLayout({ children }: { children: React.ReactNode }) {
+  const { profile } = useSession();
+  if (profile?.is_guest) return <GuestGate feature="Messages" />;
+  return <Inbox>{children}</Inbox>;
+}
+
+function Inbox({ children }: { children: React.ReactNode }) {
   const api = getApi();
   const params = useParams<{ id?: string }>();
   const { profile, online, unreadMessages } = useSession();

@@ -6,6 +6,7 @@ import { Lock, User } from 'lucide-react';
 import { getApi } from '@/lib/api';
 import { Button, Input } from '@/components/ui';
 import { SetupNotice } from '../SetupNotice';
+import { GuestButton } from '@/components/Guest';
 
 function LoginForm() {
   const params = useSearchParams();
@@ -36,6 +37,8 @@ function LoginForm() {
       <div className="flex justify-end"><Link href="/forgot-password" className="text-sm text-lavender hover:underline">Forgot password?</Link></div>
       {err && <p className="text-sm text-notify" role="alert">{err}</p>}
       <Button className="w-full" size="lg" loading={busy}>Log in</Button>
+      <div className="flex items-center gap-3 text-xs text-ink-muted"><span className="h-px flex-1 bg-line" />or<span className="h-px flex-1 bg-line" /></div>
+      <GuestButton />
       <p className="text-center text-sm text-ink-muted">New to CineLog? <Link href="/signup" className="text-amber hover:underline">Create an account</Link></p>
     </form>
   );

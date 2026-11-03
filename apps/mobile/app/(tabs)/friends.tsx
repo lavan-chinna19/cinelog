@@ -7,10 +7,17 @@ import { useAsync, useDebounced } from '@/lib/hooks';
 import { useSession } from '@/lib/session';
 import { useToast } from '@/components/toast';
 import { Avatar, Button, Card, Chips, Empty, ErrorText, Field, Screen, Skeleton, T } from '@/components/ui';
+import { GuestGate } from '@/components/guest';
 
 type Tab = 'friends' | 'received' | 'sent' | 'find';
 
-export default function Friends() {
+export default function FriendsScreen() {
+  const { profile } = useSession();
+  if (profile?.is_guest) return <GuestGate feature="Friends" />;
+  return <Friends />;
+}
+
+function Friends() {
   const router = useRouter();
   const toast = useToast();
   const { online, refreshBadges } = useSession();

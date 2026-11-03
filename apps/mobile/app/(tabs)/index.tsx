@@ -8,6 +8,7 @@ import { useSession } from '@/lib/session';
 import { Grid, MovieTile, QuickAddSheet } from '@/components/movies';
 import { useToast } from '@/components/toast';
 import { Avatar, Button, Card, Empty, ErrorText, Poster, PosterGridSkeleton, Screen, SectionHeader, Skeleton, Stars, T } from '@/components/ui';
+import { GuestBanner } from '@/components/guest';
 
 function Stat({ label, value, tint }: { label: string; value: number; tint: string }) {
   return <Card style={{ flex: 1, minWidth: '45%', gap: 4, borderColor: tint + '44' }}><T v="h1" style={{ fontSize: 26 }}>{value}</T><T v="small">{label}</T></Card>;
@@ -25,9 +26,10 @@ export default function Home() {
   return (
     <Screen refresh={<RefreshControl tintColor={colors.amber} refreshing={core.refreshing} onRefresh={() => { core.reload('refresh'); social.reload('silent'); }} />}>
       <View style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between' }}>
-        <View><T v="accent">Good to see you,</T>{profile ? <T v="h1">@{profile.username}</T> : <Skeleton h={30} w={160} />}</View>
+        <View><T v="accent">Good to see you,</T>{profile ? <T v="h1">{profile.is_guest ? 'Guest' : `@${profile.username}`}</T> : <Skeleton h={30} w={160} />}</View>
         <Button small icon="add" title="Quick Add" onPress={() => setQuick(true)} />
       </View>
+      {profile?.is_guest && <GuestBanner />}
       {core.error && <ErrorText msg={core.error} onRetry={() => core.reload()} />}
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 10 }}>
         {core.loading ? [0, 1, 2, 3].map((i) => <Skeleton key={i} h={80} w="47%" r={18} />) : <>

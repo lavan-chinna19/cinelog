@@ -5,6 +5,7 @@ import { colors } from '@cinelog/shared';
 import { api } from '@/lib/supabase';
 import { Button, Field, T } from '@/components/ui';
 import { AuthFrame } from '@/components/AuthFrame';
+import { GuestButton } from '@/components/guest';
 
 export default function Login() {
   const [id, setId] = useState(''); const [pw, setPw] = useState('');
@@ -21,6 +22,8 @@ export default function Login() {
       <Link href="/(auth)/forgot-password" style={{ alignSelf: 'flex-end' }}><T v="muted" style={{ color: colors.lavender }}>Forgot password?</T></Link>
       {err && <T style={{ color: colors.notify }}>{err}</T>}
       <Button title="Log in" onPress={submit} loading={busy} />
+      <T v="muted" style={{ textAlign: 'center' }}>or</T>
+      <GuestButton />
       <Link href="/(auth)/signup" style={{ alignSelf: 'center' }}><T v="muted">New to CineLog? <T v="muted" style={{ color: colors.amber }}>Create an account</T></T></Link>
     </AuthFrame>
   );

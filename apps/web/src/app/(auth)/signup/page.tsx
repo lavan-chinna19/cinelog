@@ -7,6 +7,7 @@ import { getApi, siteUrl } from '@/lib/api';
 import { useDebounced } from '@/lib/useAsync';
 import { Button, Input } from '@/components/ui';
 import { SetupNotice } from '../SetupNotice';
+import { GuestButton } from '@/components/Guest';
 
 export default function SignupPage() {
   const [f, setF] = useState({ username: '', email: '', password: '' });
@@ -62,6 +63,7 @@ export default function SignupPage() {
         error={touched ? errors.password : null} placeholder="8+ characters, a letter and a number" />
       {err && <p className="text-sm text-notify" role="alert">{err}</p>}
       <Button className="w-full" size="lg" loading={busy}>Sign up</Button>
+      <GuestButton variant="ghost" label="Not sure yet? Try it as a guest" />
       <p className="text-center text-sm text-ink-muted">Already have an account? <Link href="/login" className="text-amber hover:underline">Log in</Link></p>
     </form>
   );

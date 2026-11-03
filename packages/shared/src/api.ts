@@ -85,6 +85,30 @@ export function createCineLogApi(supabase: SupabaseClient, tmdb?: TmdbService) {
       if (error) throw new ApiError(error.message);
     },
     async signOut() { await supabase.auth.signOut(); },
+
+    // ── Guest / trial mode ──
+    /** Try CineLog without an account (Supabase anonymous sign-in). */
+    async continueAsGuest() {
+      const { error } = await supabase.auth.signInAnonymously();
+      if (error) throw new ApiError(/disabled/i.test(error.message) ? 'Guest mode is turned off right now. Please create an account.' : error.message);
+    },
+    async isGuest(): Promise<boolean> {
+      const { data } = await supabase.auth.getSession();
+      return Boolean(data.session?.user?.is_anonymous);
+    },
+    /** Turn the current guest into a real account. Everything they logged is kept. */
+    async upgradeGuest(p: { username: string; email: string; password: string }) {
+      const err = validateUsername(p.username) || validateEmail(p.email) || validatePassword(p.password);
+      if (err) throw new ApiError(err);
+      if (!(await auth.usernameAvailable(p.username))) throw new ApiError('That username is taken.');
+      const { data, error } = await supabase.auth.updateUser({
+        email: p.email.trim(), password: p.password, data: { username: p.username.toLowerCase() },
+      });
+      if (error) throw new ApiError(/already been registered|already exists/i.test(error.message) ? 'An account with this email already exists. Log in instead.' : error.message);
+      // new JWT so is_anonymous=false takes effect for RLS
+      await supabase.auth.refreshSession();
+      return { needsConfirmation: Boolean(data.user?.new_email) };
+    },
   };
 
   // ───────────────────────── Profiles ─────────────────────────

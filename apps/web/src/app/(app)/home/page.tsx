@@ -53,7 +53,7 @@ export default function HomePage() {
       <div className="flex flex-wrap items-end justify-between gap-4 animate-fade-up">
         <div>
           <p className="font-accent italic text-lavender">Good to see you,</p>
-          <h1 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl">{profile ? `@${profile.username}` : <Skeleton className="h-9 w-48" />}</h1>
+          <h1 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl">{profile ? (profile.is_guest ? "Guest" : `@${profile.username}`) : <Skeleton className="h-9 w-48" />}</h1>
         </div>
         <Button onClick={() => setQuickAdd(true)}><Plus className="h-4 w-4" /> Quick Add Movie</Button>
       </div>

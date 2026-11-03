@@ -6,8 +6,15 @@ import { api, supabase } from '@/lib/supabase';
 import { useAsync } from '@/lib/hooks';
 import { useSession } from '@/lib/session';
 import { Avatar, Button, Empty, ErrorText, Skeleton, T } from '@/components/ui';
+import { GuestGate } from '@/components/guest';
 
-export default function Messages() {
+export default function MessagesScreen() {
+  const { profile } = useSession();
+  if (profile?.is_guest) return <GuestGate feature="Messages" />;
+  return <Messages />;
+}
+
+function Messages() {
   const router = useRouter();
   const { profile, online } = useSession();
   const { data, loading, error, refreshing, reload } = useAsync(() => api.messages.conversations(), []);
