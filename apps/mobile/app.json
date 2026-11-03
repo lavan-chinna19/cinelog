@@ -1,0 +1,21 @@
+{
+  "expo": {
+    "name": "CineLog",
+    "slug": "cinelog",
+    "scheme": "cinelog",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#10131F",
+    "newArchEnabled": true,
+    "splash": { "backgroundColor": "#10131F", "resizeMode": "contain" },
+    "ios": { "supportsTablet": true, "bundleIdentifier": "app.cinelog.mobile" },
+    "android": { "package": "app.cinelog.mobile", "adaptiveIcon": { "backgroundColor": "#10131F" } },
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      ["expo-image-picker", { "photosPermission": "CineLog uses your photos to set your profile picture." }]
+    ],
+    "experiments": { "typedRoutes": false }
+  }
+}

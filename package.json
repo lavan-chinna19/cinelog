@@ -1,0 +1,16 @@
+{
+  "name": "cinelog",
+  "private": true,
+  "version": "1.0.0",
+  "description": "CineLog — Your movies. Your memories. Your people.",
+  "workspaces": ["packages/*", "apps/*"],
+  "scripts": {
+    "dev:web": "npm run dev -w @cinelog/web",
+    "build:web": "npm run build -w @cinelog/web",
+    "dev:mobile": "npm run start -w @cinelog/mobile",
+    "test": "npm run test -w @cinelog/shared",
+    "typecheck": "npm run typecheck -w @cinelog/shared && npm run typecheck -w @cinelog/web",
+    "db:push": "supabase db push",
+    "functions:deploy": "supabase functions deploy tmdb && supabase functions deploy username-login --no-verify-jwt"
+  }
+}

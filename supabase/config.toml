@@ -1,0 +1,16 @@
+# Minimal Supabase CLI config for CineLog (supabase init generates the full file).
+project_id = "cinelog"
+
+[auth]
+site_url = "http://localhost:3000"
+additional_redirect_urls = ["http://localhost:3000/reset-password", "cinelog://reset-password"]
+minimum_password_length = 8
+
+[auth.email]
+enable_confirmations = true
+
+[functions.tmdb]
+verify_jwt = true
+
+[functions.username-login]
+verify_jwt = false
