@@ -38,8 +38,25 @@ function normalise(r: any): TmdbMovie {
 
 export class TmdbError extends Error {}
 
-export function createTmdbService(supabase: SupabaseClient) {
+/**
+ * `endpoint`: URL of the Next.js TMDB proxy (web: '/api/tmdb'; mobile: 'https://<site>/api/tmdb').
+ * Without it, the Supabase Edge Function 'tmdb' is used.
+ */
+export function createTmdbService(supabase: SupabaseClient, opts: { endpoint?: string } = {}) {
+  async function viaEndpoint<T>(body: Record<string, unknown>): Promise<T> {
+    const { data: { session } } = await supabase.auth.getSession();
+    const res = await fetch(opts.endpoint!, {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json', ...(session ? { Authorization: `Bearer ${session.access_token}` } : {}) },
+      body: JSON.stringify(body),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || data?.error) throw new TmdbError(data?.error || 'Movie service is unavailable right now.');
+    return data as T;
+  }
   async function call<T>(body: Record<string, unknown>): Promise<T> {
+    if (opts.endpoint) return viaEndpoint<T>(body);
     const { data, error } = await supabase.functions.invoke('tmdb', { body });
     if (error) {
       let msg = 'Movie service is unavailable right now.';

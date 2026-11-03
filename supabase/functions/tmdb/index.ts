@@ -8,8 +8,8 @@
 import { corsHeaders, json } from '../_shared/cors.ts';
 
 const BASE = 'https://api.themoviedb.org/3';
-const READ_TOKEN = Deno.env.get('TMDB_READ_TOKEN');
-const API_KEY = Deno.env.get('TMDB_API_KEY');
+const READ_TOKEN = Deno.env.get('API_Read_Access_Token') ?? Deno.env.get('TMDB_READ_TOKEN');
+const API_KEY = Deno.env.get('API_Key') ?? Deno.env.get('TMDB_API_KEY');
 
 async function tmdb(path: string, params: Record<string, string | number> = {}) {
   const url = new URL(BASE + path);
@@ -27,7 +27,7 @@ Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
   if (req.method !== 'POST') return json({ error: 'Method not allowed' }, 405);
   if (!READ_TOKEN && !API_KEY) {
-    return json({ error: 'TMDB is not configured. Run: supabase secrets set TMDB_READ_TOKEN=...' }, 503);
+    return json({ error: 'TMDB is not configured. Run: supabase secrets set API_Read_Access_Token=...' }, 503);
   }
   try {
     const body = await req.json().catch(() => ({}));

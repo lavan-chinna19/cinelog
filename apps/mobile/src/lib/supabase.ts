@@ -16,4 +16,7 @@ export const supabase = createClient(url ?? 'http://localhost:54321', anon ?? 'm
 // Refresh tokens only while the app is in the foreground.
 AppState.addEventListener('change', (s) => (s === 'active' ? supabase.auth.startAutoRefresh() : supabase.auth.stopAutoRefresh()));
 
-export const api = createCineLogApi(supabase, createTmdbService(supabase));
+// TMDB goes through the website's /api/tmdb proxy when EXPO_PUBLIC_TMDB_PROXY_URL is set
+// (e.g. https://cinelog-gules.vercel.app/api/tmdb); otherwise through the Supabase 'tmdb' Edge Function.
+const tmdbProxy = process.env.EXPO_PUBLIC_TMDB_PROXY_URL;
+export const api = createCineLogApi(supabase, createTmdbService(supabase, tmdbProxy ? { endpoint: tmdbProxy } : {}));

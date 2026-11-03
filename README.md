@@ -96,11 +96,13 @@ All primary keys are UUIDs, with foreign keys throughout. Key constraints:
 ## 2 · TMDB setup
 
 1. Create an account at [themoviedb.org](https://www.themoviedb.org/), then go to Settings → API and copy the **API Read Access Token** (v4). A v3 API key also works.
-2. Store it as an Edge Function secret. Never put it in an app `.env`:
+2. Add it to the **web app's server environment** (Vercel → Project → Settings → Environment Variables, or `apps/web/.env.local` locally). Never use a `NEXT_PUBLIC_` prefix:
    ```bash
-   supabase secrets set TMDB_READ_TOKEN=eyJhbGciOi...
-   # or: supabase secrets set TMDB_API_KEY=xxxxxxxx
+   API_Read_Access_Token=eyJhbGciOi...   # preferred (v4 token)
+   API_Key=xxxxxxxx                       # optional fallback (v3 key)
    ```
+   The website's `/api/tmdb` route reads these and proxies TMDB for signed-in users. The mobile app uses the same route via `EXPO_PUBLIC_TMDB_PROXY_URL`.
+   *(Optional)* The Supabase `tmdb` Edge Function reads the same names: `supabase secrets set API_Read_Access_Token=...`
 3. Deploy the functions:
    ```bash
    supabase functions deploy tmdb
@@ -162,7 +164,8 @@ eas submit               # store submission
 | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` | web | public (protected by RLS) |
 | `NEXT_PUBLIC_SITE_URL` | web | public |
 | `EXPO_PUBLIC_SUPABASE_URL`, `EXPO_PUBLIC_SUPABASE_ANON_KEY` | mobile | public (protected by RLS) |
-| `TMDB_READ_TOKEN` / `TMDB_API_KEY` | Supabase function secrets | **secret** |
+| `API_Read_Access_Token` / `API_Key` | web server env (Vercel); optionally Supabase function secrets | **secret** |
+| `EXPO_PUBLIC_TMDB_PROXY_URL` | mobile | public URL of the web `/api/tmdb` route |
 | `SUPABASE_SERVICE_ROLE_KEY` | injected into Edge Functions automatically | **secret, never in an app** |
 
 ---

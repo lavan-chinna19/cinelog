@@ -21,6 +21,7 @@ export async function middleware(req: NextRequest) {
   // Refreshes the session cookie (persistent login) and validates the JWT server-side.
   const { data: { user } } = await supabase.auth.getUser();
   const path = req.nextUrl.pathname;
+  if (path.startsWith('/api/')) return res; // API routes do their own auth checks
 
   if (!user && !PUBLIC.includes(path)) {
     const url = req.nextUrl.clone(); url.pathname = '/login'; url.searchParams.set('next', path);

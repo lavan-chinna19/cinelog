@@ -6,7 +6,7 @@ let api: CineLogApi | null = null;
 export function getApi(): CineLogApi {
   if (!api) {
     const sb = getSupabase();
-    api = createCineLogApi(sb, createTmdbService(sb));
+    api = createCineLogApi(sb, createTmdbService(sb, { endpoint: '/api/tmdb' }));
   }
   return api;
 }
