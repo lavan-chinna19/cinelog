@@ -118,8 +118,9 @@ export function createCineLogApi(supabase: SupabaseClient, tmdb?: TmdbService) {
       return profiles.update({ avatar_url: url });
     },
     async search(q: string, limit = 20): Promise<ProfileLite[]> {
-      const term = q.trim().replace(/[%_,()]/g, '');
-      if (term.length < 2) return [];
+      const raw = q.trim().replace(/^@/, '').replace(/[%,()\\]/g, '');
+      if (raw.length < 2) return [];
+      const term = raw.replace(/_/g, '\\_'); // '_' is a LIKE wildcard: escape it so exact usernames match
       const me = await uid();
       return unwrap(await supabase.from('profiles').select(`${LITE}, bio`).ilike('username', `%${term}%`).neq('id', me).limit(limit)) as ProfileLite[];
     },

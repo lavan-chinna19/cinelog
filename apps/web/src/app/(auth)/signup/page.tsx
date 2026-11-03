@@ -1,7 +1,6 @@
 'use client';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { AtSign, Check, Lock, Mail, X } from 'lucide-react';
 import { validateEmail, validatePassword, validateUsername } from '@cinelog/shared';
 import { getApi, siteUrl } from '@/lib/api';
@@ -10,7 +9,6 @@ import { Button, Input } from '@/components/ui';
 import { SetupNotice } from '../SetupNotice';
 
 export default function SignupPage() {
-  const router = useRouter();
   const [f, setF] = useState({ username: '', email: '', password: '' });
   const [touched, setTouched] = useState(false);
   const [available, setAvailable] = useState<boolean | null>(null);
@@ -34,7 +32,7 @@ export default function SignupPage() {
     setBusy(true);
     try {
       const { needsConfirmation } = await getApi().auth.signUp({ ...f, redirectTo: `${siteUrl()}/auth/callback?next=/home` });
-      if (needsConfirmation) setSent(true); else { router.replace('/home'); router.refresh(); }
+      if (needsConfirmation) setSent(true); else { window.location.assign('/home'); }
     } catch (e) { setErr((e as Error).message); } finally { setBusy(false); }
   }
 

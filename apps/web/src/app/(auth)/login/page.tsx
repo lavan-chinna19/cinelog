@@ -1,14 +1,13 @@
 'use client';
 import Link from 'next/link';
 import { Suspense, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { Lock, User } from 'lucide-react';
 import { getApi } from '@/lib/api';
 import { Button, Input } from '@/components/ui';
 import { SetupNotice } from '../SetupNotice';
 
 function LoginForm() {
-  const router = useRouter();
   const params = useSearchParams();
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
@@ -20,8 +19,9 @@ function LoginForm() {
     try {
       await getApi().auth.signIn(identifier, password);
       const next = params.get('next');
-      router.replace(next && next.startsWith('/') && !next.startsWith('//') ? next : '/home');
-      router.refresh();
+      // Hard navigation so the middleware sees the fresh session cookie
+      // (a soft router.replace can reuse a cached pre-login redirect to /login).
+      window.location.assign(next && next.startsWith('/') && !next.startsWith('//') ? next : '/home');
     } catch (e) { setErr((e as Error).message); } finally { setBusy(false); }
   }
 
