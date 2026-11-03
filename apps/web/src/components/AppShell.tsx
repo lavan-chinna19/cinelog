@@ -6,7 +6,7 @@ import { useState, type ReactNode } from 'react';
 import { BarChart3, Bell, BookOpen, Bookmark, Clapperboard, Home, LogOut, MessageCircle, Plus, Settings, User, Users } from 'lucide-react';
 import { getApi } from '@/lib/api';
 import { useSession } from './SessionProvider';
-import { Avatar } from './ui';
+import { Avatar, Button, Modal } from './ui';
 import { QuickAddModal } from './movies/QuickAddModal';
 import { GuestBanner } from './Guest';
 
@@ -31,6 +31,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const path = usePathname();
   const { profile, unreadMessages, unreadNotifications } = useSession();
   const [quickAdd, setQuickAdd] = useState(false);
+  const [leaveGuest, setLeaveGuest] = useState(false);
   const active = (href: string) => path === href || path.startsWith(href + '/');
 
   return (
@@ -64,7 +65,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             <div className="min-w-0 flex-1">{profile.is_guest
               ? <><p className="truncate text-sm font-medium">Guest</p><Link href="/claim" className="text-xs text-amber hover:underline">Create account</Link></>
               : <p className="truncate text-sm font-medium">@{profile.username}</p>}</div>
-            <button onClick={() => { if (!profile.is_guest || confirm('Leave guest mode? Movies you logged as a guest will be lost unless you create an account first.')) getApi().auth.signOut(); }} className="rounded-lg p-1.5 text-ink-muted hover:bg-surface-raised hover:text-notify" aria-label="Log out"><LogOut className="h-4 w-4" /></button>
+            <button onClick={() => profile.is_guest ? setLeaveGuest(true) : getApi().auth.signOut()} className="rounded-lg p-1.5 text-ink-muted hover:bg-surface-raised hover:text-notify" aria-label="Log out"><LogOut className="h-4 w-4" /></button>
           </div>
         )}
       </aside>
@@ -102,6 +103,14 @@ export function AppShell({ children }: { children: ReactNode }) {
       </nav>
 
       <QuickAddModal open={quickAdd} onClose={() => setQuickAdd(false)} />
+      <Modal open={leaveGuest} onClose={() => setLeaveGuest(false)} title="Leave guest mode?">
+        <p className="text-sm text-ink-muted">Movies you logged as a guest will be lost unless you create a free account first.</p>
+        <div className="mt-5 flex flex-wrap justify-end gap-2">
+          <Button variant="ghost" onClick={() => setLeaveGuest(false)}>Cancel</Button>
+          <Link href="/claim" onClick={() => setLeaveGuest(false)}><Button variant="secondary">Create account</Button></Link>
+          <Button variant="danger" onClick={() => getApi().auth.signOut()}>Leave &amp; discard</Button>
+        </div>
+      </Modal>
     </div>
   );
 }
