@@ -1,0 +1,29 @@
+{
+  "cli": {
+    "version": ">= 16.0.0",
+    "appVersionSource": "local"
+  },
+  "build": {
+    "preview": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_SUPABASE_URL": "https://lrebhdmprdhzcqqrajac.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyZWJoZG1wcmRoemNxcXJhamFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM3MTE3NTMsImV4cCI6MjEwOTI4Nzc1M30.6dhSSzKnm4bd6yH86RNWC3MAEXXuIf34GDlZm_xjWMg",
+        "EXPO_PUBLIC_TMDB_PROXY_URL": "https://cinelog-gules.vercel.app/api/tmdb"
+      }
+    },
+    "production": {
+      "android": {
+        "buildType": "app-bundle"
+      },
+      "env": {
+        "EXPO_PUBLIC_SUPABASE_URL": "https://lrebhdmprdhzcqqrajac.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyZWJoZG1wcmRoemNxcXJhamFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM3MTE3NTMsImV4cCI6MjEwOTI4Nzc1M30.6dhSSzKnm4bd6yH86RNWC3MAEXXuIf34GDlZm_xjWMg",
+        "EXPO_PUBLIC_TMDB_PROXY_URL": "https://cinelog-gules.vercel.app/api/tmdb"
+      }
+    }
+  }
+}

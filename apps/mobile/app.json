@@ -8,14 +8,36 @@
     "userInterfaceStyle": "dark",
     "backgroundColor": "#10131F",
     "newArchEnabled": true,
-    "splash": { "backgroundColor": "#10131F", "resizeMode": "contain" },
-    "ios": { "supportsTablet": true, "bundleIdentifier": "app.cinelog.mobile" },
-    "android": { "package": "app.cinelog.mobile", "adaptiveIcon": { "backgroundColor": "#10131F" } },
+    "splash": {
+      "image": "./assets/adaptive-icon.png",
+      "backgroundColor": "#10131F",
+      "resizeMode": "contain"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "app.cinelog.mobile"
+    },
+    "android": {
+      "package": "app.cinelog.mobile",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#10131F"
+      },
+      "versionCode": 1
+    },
     "plugins": [
       "expo-router",
       "expo-font",
-      ["expo-image-picker", { "photosPermission": "CineLog uses your photos to set your profile picture." }]
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "CineLog uses your photos to set your profile picture."
+        }
+      ]
     ],
-    "experiments": { "typedRoutes": false }
+    "experiments": {
+      "typedRoutes": false
+    },
+    "icon": "./assets/icon.png"
   }
 }
