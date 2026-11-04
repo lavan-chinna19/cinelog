@@ -23,7 +23,10 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#10131F"
       },
-      "versionCode": 1
+      "versionCode": 1,
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "plugins": [
       "expo-router",
@@ -38,6 +41,13 @@
     "experiments": {
       "typedRoutes": false
     },
-    "icon": "./assets/icon.png"
+    "icon": "./assets/icon.png",
+    "owner": "chinna19s-team",
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "71e99da1-67f8-48cf-952d-33edc2d34741"
+      }
+    }
   }
 }
